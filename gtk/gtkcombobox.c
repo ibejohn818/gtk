@@ -1714,6 +1714,11 @@ gtk_combo_box_scroll_controller_scroll (GtkEventControllerScroll *scroll,
   GtkTreeIter iter;
   GtkTreeIter new_iter;
 
+  /* Scrolling the parent window/container takes precedence - Issue #3092 */
+  if (gtk_widget_inside_scrollable_container (GTK_WIDGET (combo_box)))
+    return GDK_EVENT_PROPAGATE;
+
+
   if (!gtk_combo_box_get_active_iter (combo_box, &iter))
     return GDK_EVENT_PROPAGATE;
 

@@ -2206,6 +2206,10 @@ gtk_range_scroll_controller_scroll (GtkEventControllerScroll *scroll,
   gboolean handled;
   GtkOrientation move_orientation;
 
+  /* Scrolling the parent window/container takes precedence - Issue #3092 */
+  if (gtk_widget_inside_scrollable_container (GTK_WIDGET (range)))
+    return GDK_EVENT_PROPAGATE;
+
 #ifdef GDK_WINDOWING_MACOS
   scroll_unit = 1;
 #else

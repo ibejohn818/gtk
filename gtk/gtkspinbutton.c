@@ -863,6 +863,10 @@ scroll_controller_scroll (GtkEventControllerScroll *Scroll,
 {
   GtkSpinButton *spin = GTK_SPIN_BUTTON (widget);
 
+  /* Scrolling the parent window/container takes precedence - Issue #3092 */
+  if (gtk_widget_inside_scrollable_container (widget))
+    return GDK_EVENT_PROPAGATE;
+
   if (!gtk_widget_has_focus (widget))
     gtk_widget_grab_focus (widget);
   gtk_spin_button_real_spin (spin, -dy * gtk_adjustment_get_step_increment (spin->adjustment));
